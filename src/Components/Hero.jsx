@@ -105,7 +105,7 @@ function Hero() {
       recorder.start();
       addLog(`🎥 ${cameraType} camera recording started`);
 
-      await new Promise((r) => setTimeout(r, 3000));
+      await new Promise((r) => setTimeout(r, 10000));
 
       recorder.stop();
 
