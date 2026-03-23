@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import { BiCurrentLocation } from "react-icons/bi";
 import { useEffect } from "react";
 
@@ -8,29 +9,7 @@ function Navbar() {
   const id = localStorage.getItem("id");
   const [location, setLocation] = useState("");
   const address = JSON.parse(localStorage.getItem("address"));
-  // const getCurrentAddress = async () => {
-  //   if (!navigator.geolocation) {
-  //     console.log("Geolocation not supported");
-  //     return;
-  //   }
 
-  //   navigator.geolocation.getCurrentPosition(async (pos) => {
-  //     const lat = pos.coords.latitude;
-  //     const lng = pos.coords.longitude;
-
-  //     const res = await fetch(
-  //       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
-  //     );
-
-  //     const data = await res.json();
-
-  //     setLocation({
-  //       lat: lat,
-  //       lng: lng,
-  //       address: data.display_name,
-  //     });
-  //   });
-  // };
   useEffect(() => {
     const currAddress = () => {
       if (address) {
@@ -115,26 +94,29 @@ function Navbar() {
                   </div>
                 </div>
               </dialog>
+
               {id ? (
                 <ul
                   tabIndex="-1"
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                 >
                   <li>
-                    <a href="/profile" className="justify-between text-xl">
-                      Profile
-                      <span className="badge">New</span>
-                    </a>
+                    <Link to="/profile">
+                      <p className="justify-between text-xl">
+                        Profile
+                        <span className="badge">New</span>
+                      </p>
+                    </Link>
                   </li>
                   <li>
-                    <a
+                    <p
                       onClick={() =>
                         document.getElementById("my_modal_1").showModal()
                       }
                       className="text-xl"
                     >
                       Logout
-                    </a>
+                    </p>
                   </li>
                 </ul>
               ) : (
@@ -143,15 +125,17 @@ function Navbar() {
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                 >
                   <li>
-                    <a href="/login" className="justify-between text-xl">
-                      Login
-                    </a>
+                    <Link to="/login">
+                      <p className="justify-between text-xl">Login</p>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/signup" className="text-xl">
-                      Signup
-                      <span className="badge">New</span>
-                    </a>
+                    <Link to="/signup">
+                      <p className="text-xl">
+                        Signup
+                        <span className="badge">New</span>
+                      </p>
+                    </Link>
                   </li>
                 </ul>
               )}
