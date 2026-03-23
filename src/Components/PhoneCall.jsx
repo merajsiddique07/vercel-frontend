@@ -1,69 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function PhoneCall() {
   const location = useLocation();
   const navigate = useNavigate();
+
   const emerData = JSON.parse(localStorage.getItem("emerData")) || {
     name: "Papa",
     phone: "9918155830",
   };
+
   const callerName = location.state?.callerName || emerData.name;
   const callNumber = location.state?.callNumber || emerData.phone;
-  const callMinutes = location.state?.callTime || 3; // minutes
+  const callMinutes = location.state?.callTime || 3;
 
   const [callStatus, setCallStatus] = useState("Calling...");
   const [seconds, setSeconds] = useState(0);
 
   const totalSeconds = callMinutes * 60;
 
-  // ringtone
-  const ringtone = new Audio("../../public/ringing.mp3");
+  // ✅ useRef for audio (important fix)
+  const ringtoneRef = useRef(null);
 
   useEffect(() => {
-    // STEP 1 → Calling (3 sec)
+    ringtoneRef.current = new Audio("/ringing.mp3");
+    ringtoneRef.current.loop = true;
+
+    // STEP 1 → Calling
     const callingTimer = setTimeout(() => {
       setCallStatus("Ringing...");
-      ringtone.loop = true;
-      ringtone.play();
+
+      ringtoneRef.current
+        .play()
+        .catch((err) => console.log("Audio blocked:", err));
     }, 3000);
 
-    // STEP 2 → Ringing (10 sec)
+    // STEP 2 → Ringing → Connected
     const ringingTimer = setTimeout(() => {
-      ringtone.pause();
+      ringtoneRef.current.pause();
       setCallStatus("Connected");
     }, 13000);
 
     return () => {
       clearTimeout(callingTimer);
       clearTimeout(ringingTimer);
-      ringtone.pause();
+      ringtoneRef.current?.pause();
     };
   }, []);
 
-  // STEP 3 → Call timer
+  // ✅ Call timer
   useEffect(() => {
-    if (callStatus === "Connected") {
-      const interval = setInterval(() => {
-        setSeconds((prev) => {
-          if (prev >= totalSeconds) {
-            navigate("/dial");
-            return prev;
-          }
+    if (callStatus !== "Connected") return;
 
-          return prev + 1;
-        });
-      }, 1000);
+    const interval = setInterval(() => {
+      setSeconds((prev) => {
+        if (prev >= totalSeconds) {
+          navigate("/dial");
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 1000);
 
-      return () => clearInterval(interval);
-    }
-  }, [callStatus]);
+    return () => clearInterval(interval);
+  }, [callStatus, totalSeconds, navigate]);
 
   // format timer
   const formatTime = (sec) => {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
     return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  };
+
+  // ✅ End call handler
+  const endCall = () => {
+    ringtoneRef.current?.pause();
+    navigate("/dial");
   };
 
   return (
@@ -81,7 +93,7 @@ function PhoneCall() {
         </div>
       </div>
 
-      {/* Call controls */}
+      {/* Controls */}
       <div className="grid grid-cols-3 gap-8 text-center text-xl">
         <div>
           <i className="fa-solid fa-user text-3xl"></i>
@@ -115,15 +127,15 @@ function PhoneCall() {
       </div>
 
       {/* End call */}
-      <Link to="/dial">
-        <div className="flex flex-col items-center">
-          <div className="w-20 h-20 flex rounded-full bg-red-600 items-center justify-center text-white text-4xl">
-            <i className="fa-solid fa-phone-slash"></i>
-          </div>
-
-          <p className=" mt-2">End Call</p>
+      <div
+        onClick={endCall}
+        className="flex flex-col items-center cursor-pointer"
+      >
+        <div className="w-20 h-20 flex rounded-full bg-red-600 items-center justify-center text-white text-4xl">
+          <i className="fa-solid fa-phone-slash"></i>
         </div>
-      </Link>
+        <p className="mt-2">End Call</p>
+      </div>
     </div>
   );
 }

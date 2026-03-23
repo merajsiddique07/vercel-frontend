@@ -23,7 +23,7 @@ function SosHistory() {
     <div className="min-h-screen bg-gradient-to-b from-pink-200 via-pink-100 to-white flex flex-col items-start p-6">
       {/* Header */}
       <div className="w-full fixed top-0 left-0 right-0 p-5 bg-pink-200 z-20">
-        <Link to="/home">
+        <Link to="/">
           <div className="text-4xl text-pink-800 mb-3">
             <TiArrowBack />
           </div>

@@ -149,7 +149,7 @@ function ProfilePage() {
   return (
     <div className="w-auto max-w-md bg-gradient-to-b from-pink-200 to-pink-400  shadow-xl p-7">
       {/* Back */}
-      <Link to="/home">
+      <Link to="/">
         <div className="text-4xl text-pink-800 mb-3">
           <TiArrowBack />
         </div>

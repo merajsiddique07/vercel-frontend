@@ -31,7 +31,7 @@ export default function FakeDialer() {
     <div className="min-h-screen bg-gradient-to-b from-pink-200 via-pink-100 to-white flex flex-col items-center justify-evenly p-6">
       {/* Header */}
       <div className="w-full max-w-sm  rounded-2xl p-5 mb-6">
-        <Link to="/home">
+        <Link to="/">
           <div className="text-4xl text-pink-800 mb-3">
             <TiArrowBack />
           </div>

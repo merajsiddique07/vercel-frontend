@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
-import LoginPage from "./LoginPage";
 
 function BottomBar() {
   const user = localStorage.getItem("id");

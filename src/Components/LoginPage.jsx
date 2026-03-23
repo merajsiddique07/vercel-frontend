@@ -1,6 +1,5 @@
 import React from "react";
 import { FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../utils/axios.js";
@@ -8,7 +7,7 @@ import axios from "../utils/axios.js";
 function LoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,

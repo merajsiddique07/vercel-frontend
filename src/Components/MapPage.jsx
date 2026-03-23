@@ -109,7 +109,7 @@ export default function MapPage() {
       </MapContainer>
 
       {/* TOP LEFT MENU */}
-      <Link to="/home">
+      <Link to="/">
         <button className="absolute top-5 left-5 w-12 h-12 bg-pink-400 text-white rounded-full shadow-lg flex items-center justify-center z-[1000]">
           <TiArrowBack size={30} />
         </button>
@@ -121,7 +121,7 @@ export default function MapPage() {
       </button>
 
       {/* SOS BUTTON */}
-      <Link to="/home">
+      <Link to="/">
         <button className="absolute bottom-12 left-6 w-16 h-16 bg-pink-400 text-white rounded-full shadow-xl flex items-center justify-center text-3xl cursor-pointer z-[1000]">
           <i className="fa-solid fa-triangle-exclamation"></i>
         </button>

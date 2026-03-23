@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/phone" element={<PhoneCall />} />
         <Route path="/dial" element={<DialerPage />} />
         <Route path="/login" element={<LoginPage />} />
