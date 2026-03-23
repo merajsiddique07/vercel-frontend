@@ -213,10 +213,10 @@ function Hero() {
 
   return (
     <>
-      <div className="md:flex md:flex-row">
-        <div className="w-auto h-140 flex flex-col items-center">
+      <div className="md:flex md:flex-row md:pr-5">
+        <div className="md:w-full flex flex-col items-center">
           <div
-            className="bg-red-500 text-white font-extrabold text-5xl w-60 h-60 rounded-full shadow-2xl text-center pt-24 mt-5 cursor-pointer hover:bg-red-700 duration-200"
+            className="bg-red-500 text-white font-extrabold text-5xl md:text-4xl w-60 md:w-40 md:h-40 h-60 rounded-full shadow-2xl text-center md:text-center md:pt-15 pt-24 mt-5 md:mt-10 cursor-pointer hover:bg-red-700 duration-200"
             onClick={() => {
               if (id) {
                 setLogs([]); // clear previous operations
@@ -266,8 +266,8 @@ function Hero() {
             </dialog>
           </div>
 
-          <div className="mt-8 mb-10">
-            <p className="font-bold text-xl animate-bounce">
+          <div className="mt-8 mb-10 md:mb-6">
+            <p className="font-bold text-xl md:text-xs animate-bounce">
               Tap for emergency help
             </p>
           </div>
@@ -294,10 +294,10 @@ function Hero() {
           </div>
         </div>
 
-        <div className="w-90 md:w-120 ml-8 md:ml-50">
+        <div className="w-90 md:w-120 ml-8 md:ml-50 md:mt-20">
           <h2 className="font-semibold text-2xl my-2">Notifications:</h2>
 
-          <ul className=" max-h-30 overflow-y-auto space-y-2 pr-1">
+          <ul className=" max-h-30 md:max-h-85 overflow-y-auto space-y-2 pr-1">
             {logs.map((log, index) => (
               <li
                 key={index}

@@ -27,7 +27,6 @@ function SignupPage() {
         navigate(from, { replace: true });
       })
       .catch((err) => {
-        console.log(err.response);
         if (err.respose) {
           console.log("Error :", err.respose.data.message);
         }

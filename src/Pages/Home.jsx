@@ -6,7 +6,7 @@ import Hero from "../Components/Hero";
 function Home() {
   return (
     <>
-      <div className="h-220 bg-gradient-to-b from-gray-100 via-pink-200 to-pink-400">
+      <div className="h-220 md:h-150 md:w-full bg-gradient-to-b from-gray-100 via-pink-200 to-pink-400">
         <Navbar />
         <Hero />
         <BottomBar />

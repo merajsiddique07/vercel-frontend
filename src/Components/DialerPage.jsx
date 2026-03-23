@@ -28,7 +28,7 @@ export default function FakeDialer() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-200 via-pink-100 to-white flex flex-col items-center justify-evenly p-6">
+    <div className="min-h-screen bg-gradient-to-b from-pink-200 via-pink-100 to-white flex flex-col items-center justify-evenly p-6 md:p-4">
       {/* Header */}
       <div className="w-full max-w-sm  rounded-2xl p-5 mb-6">
         <Link to="/">
