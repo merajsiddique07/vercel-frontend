@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Poppins:wght@500&display=swap");
+@import "tailwindcss";
+@plugin "daisyui";
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+.gridBox div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: rgb(244, 242, 242);
+}
+.gridBox div:hover {
+  scale: 1.05;
+  background-color: rgb(255, 44, 237);
+  color: white;
+}
+
+.list li {
+  background-color: rgb(77, 75, 75);
+  padding: 10px;
+  margin: 4px;
+  border-radius: 8px;
+  color: white;
+}
+
+.bottomBar button {
+  width: 2.75rem; /* w-11 */
+  height: 2.75rem; /* h-11 */
+  background-color: white; /* bg-white */
+  border-radius: 9999px; /* rounded-full */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  cursor: pointer;
+}
