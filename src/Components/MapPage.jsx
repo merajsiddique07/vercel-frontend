@@ -92,7 +92,7 @@ export default function MapPage() {
   return (
     <div className="h-screen w-full relative overflow-hidden">
       {/* Address card */}
-      <div className="absolute top-16 left-4 right-4 bg-white p-3 rounded-xl shadow-md text-sm z-[1000]">
+      <div className="absolute top-20 left-6 right-6 bg-white p-3 rounded-xl shadow-md text-sm z-[1000]">
         📍 {address}
       </div>
 

@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import axios from "../utils/axios";
+import { toast } from "sonner";
 
 function SosHistory() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/error";
   const id = localStorage.getItem("id");
   const [logs, setLogs] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`/user/sosRecords/${id}`);
-
         setLogs(res.data.sosData); // ✅ correct
       } catch (err) {
-        console.log(err);
+        toast.error("History not found!");
+        navigate(from, { replace: true });
       }
     };
     fetchData();

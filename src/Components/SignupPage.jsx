@@ -3,6 +3,7 @@ import { FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../utils/axios.js";
+import { toast } from "sonner";
 
 function SignupPage() {
   const location = useLocation();
@@ -24,12 +25,16 @@ function SignupPage() {
     await axios
       .post("/user/signup", userInfo)
       .then(() => {
-        navigate(from, { replace: true });
+        toast.success("Signed Up successfully!");
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 2000);
       })
       .catch((err) => {
-        if (err.respose) {
-          console.log("Error :", err.respose.data.message);
-        }
+        toast.error(`Error: ${err}`);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
       });
   };
 
@@ -65,6 +70,7 @@ function SignupPage() {
             <input
               type="email"
               placeholder="Email"
+              pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
               className="w-full mb-4 px-4 py-2 rounded-md text-black outline-none bg-white"
               {...register("email", {
                 required: true,
@@ -78,6 +84,7 @@ function SignupPage() {
             <input
               type="text"
               placeholder="Phone No."
+              pattern="[6-9]{1}[0-9]{9}"
               className="w-full mb-4 px-4 py-2 rounded-md text-black outline-none bg-white"
               {...register("phone", {
                 required: true,

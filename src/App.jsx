@@ -8,11 +8,16 @@ import ProfilePage from "./Components/ProfilePage";
 import MapPage from "./Components/MapPage";
 import DialerPage from "./Components/DialerPage";
 import SosHistory from "./Components/SosHistory";
+import AboutSafora from "./Components/AboutSafora";
+import { Toaster } from "sonner";
+import ErrorHandling from "./Components/ErrorHandling";
 
 function App() {
   return (
     <>
+      <Toaster position="top-center" richColors />
       <Routes>
+        <Route path="*" element={<ErrorHandling />} />
         <Route path="/" element={<Home />} />
         <Route path="/phone" element={<PhoneCall />} />
         <Route path="/dial" element={<DialerPage />} />
@@ -21,6 +26,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/sosRecords" element={<SosHistory />} />
+        <Route path="/about" element={<AboutSafora />} />
       </Routes>
     </>
   );

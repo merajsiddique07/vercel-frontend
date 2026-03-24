@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
+import { RiPoliceCarFill } from "react-icons/ri";
+import { toast } from "sonner";
 
 function Hero() {
+  const [stations, setStations] = useState([]);
+  const [loadingStations, setLoadingStations] = useState(false);
   const [count, setCount] = useState(5);
   const [recording, setRecording] = useState(false);
   const id = localStorage.getItem("id");
   const [logs, setLogs] = useState([]);
   const [running, setRunning] = useState(false);
-
   const [location, setLocation] = useState({
     lat: null,
     lng: null,
@@ -18,6 +21,65 @@ function Hero() {
   });
 
   const navigate = useNavigate();
+
+  const handleQuickHelp = () => {
+    document.getElementById("my_modal_5").showModal();
+    setLoadingStations(true);
+
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+
+      const query = `
+      [out:json];
+      node["amenity"="police"](around:2000,${lat},${lng});
+      out;
+    `;
+
+      const res = await fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        body: query,
+      });
+
+      const data = await res.json();
+
+      const getDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+
+        const a =
+          Math.sin(dLat / 2) ** 2 +
+          Math.cos(lat1 * (Math.PI / 180)) *
+            Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) ** 2;
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      };
+
+      const result = data.elements.map((place) => {
+        const dist = getDistance(lat, lng, place.lat, place.lon);
+
+        return {
+          id: place.id,
+          name: place.tags.name || "Police Station",
+          distance: dist.toFixed(1),
+          lat: place.lat,
+          lng: place.lon,
+        };
+      });
+
+      result.sort((a, b) => a.distance - b.distance);
+
+      setStations(result.slice(0, 5));
+      setLoadingStations(false);
+    });
+  };
+
+  const openMap = (lat, lng) => {
+    window.open(`https://www.google.com/maps?q=${lat},${lng}`);
+  };
 
   const addLog = (message) => {
     const time = new Date().toLocaleTimeString();
@@ -90,6 +152,27 @@ function Hero() {
     return data.secure_url;
   };
 
+  // Alarm
+
+  const audioRef = useRef(null);
+
+  const startAlarm = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio("/alarm.mp3");
+      audioRef.current.loop = true;
+    }
+    addLog("📞 Alarm activated!");
+    audioRef.current.play();
+  };
+
+  const stopAlarm = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      addLog("📞 Alarm stopped!");
+      audioRef.current.currentTime = 0;
+    }
+  };
+
   const recordCamera = async (cameraType) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -151,12 +234,13 @@ function Hero() {
       });
 
       addLog("🚨 SOS successfully triggered");
+      toast.error("SOS🚨 successfully triggered");
       setTimeout(() => {
         window.location.reload();
       }, 2000);
-    } catch (error) {
-      console.log(error);
-      addLog("❌ SOS sending failed");
+    } catch (err) {
+      toast.error("SOS sendinf failed!");
+      addLog("❌ SOS sending failed!");
     }
   };
 
@@ -189,7 +273,9 @@ function Hero() {
 
   // ✅ Reset count when started
   useEffect(() => {
-    if (running) setCount(5);
+    if (running) {
+      setCount(5);
+    }
   }, [running]);
 
   // ✅ Countdown
@@ -272,25 +358,95 @@ function Hero() {
             </p>
           </div>
 
+          {/* popup */}
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-xl">Emergency Alarm!</h3>
+              <div className="flex flex-col justify-center items-center my-2 mt-4 ">
+                <p>
+                  <img className="rounded-3xl" src="/alarm.gif" alt="alarm" />
+                </p>
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button
+                      onClick={stopAlarm}
+                      className="btn bg-red-500 text-white font-normal rounded-xl p-6 text-xl"
+                    >
+                      Close
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </dialog>
+
+          {/* location fetch */}
+          <dialog id="my_modal_5" className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">🚓 Nearby Police Stations</h3>
+
+              {loadingStations ? (
+                <p className="py-4">Fetching nearby help...</p>
+              ) : stations.length === 0 ? (
+                <p className="py-4">No nearby stations found</p>
+              ) : (
+                <div className="space-y-3 mt-3">
+                  {stations.map((station) => (
+                    <div
+                      key={station.id}
+                      className="border p-3 rounded-lg shadow-sm"
+                    >
+                      <h4 className="font-semibold">🚓 {station.name}</h4>
+                      <p>📍 {station.distance} km away</p>
+                      <p>⭐ N/A</p>
+
+                      <button
+                        className="btn btn-sm btn-primary mt-2"
+                        onClick={() => openMap(station.lat, station.lng)}
+                      >
+                        🧭 Navigate
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="modal-action">
+                <form method="dialog">
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+
           <div className="gridBox grid grid-cols-2 gap-4 mt-2">
             <Link to="/phone">
               <div onClick={fakeCall}>
                 <i className="fa-solid fa-phone"></i>
-                <p>Instant Call</p>
+                <p className="mt-2">Instant Call</p>
               </div>
             </Link>
-            <div>
-              <i className="fa-solid fa-share-nodes"></i>
-              <p>Share Location</p>
+            <div
+              onClick={() => {
+                document.getElementById("my_modal_3").showModal();
+                startAlarm();
+              }}
+            >
+              <i className="fa-solid fa-alarm-clock"></i>
+              <p className="mt-2">Alert System</p>
             </div>
-            <div>
-              <i className="fa-solid fa-route"></i>
-              <p>Safe Route</p>
+
+            <div onClick={handleQuickHelp}>
+              <RiPoliceCarFill size={22} />
+              <p className="mt-2">Quick Help</p>
             </div>
-            <div>
-              <i className="fa-solid fa-triangle-exclamation"></i>
-              <p>Report</p>
-            </div>
+            <Link to="https://ncwapps.nic.in/onlinecomplaintsv2/frmPubRegistration.aspx?utm_source=chatgpt.com">
+              <div>
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                <p className="mt-2">Report</p>
+              </div>
+            </Link>
           </div>
         </div>
 

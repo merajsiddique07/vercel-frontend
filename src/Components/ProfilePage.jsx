@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { FaPen } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TiArrowBack } from "react-icons/ti";
 import avatar1 from "../assets/avatar.jpg";
 import { useRef } from "react";
 import imageCompression from "browser-image-compression";
 import axios from "../utils/axios.js";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function ProfilePage() {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/login";
   const id = localStorage.getItem("id");
   const [profile, setProfile] = useState({
     fullname: "Adam",
@@ -68,13 +69,14 @@ function ProfilePage() {
 
     await axios
       .put("/user/emergecyUpdate", userInfo)
-      .then((res) => {
-        return res.status(200).json({ message: "Updated successfully!" });
+      .then(() => {
+        toast.success("Updated successfully!");
       })
-      .catch((err) => {
-        if (err.respose) {
-          console.log("Error :", err.respose.data.message);
-        }
+      .catch(() => {
+        toast.error("Something went wrong!");
+        setTimeout(() => {
+          return window.location.reload();
+        }, 2000);
       });
   };
 
@@ -126,13 +128,6 @@ function ProfilePage() {
     const file = e.target.files[0];
 
     if (!file) return;
-
-    // const sizeMB = file.size / (1024 * 1024);
-
-    // if (sizeMB < 0.2 || sizeMB > 2) {
-    //   alert("Image must be between 200KB and 2MB");
-    //   return;
-    // }
 
     setLoading(true);
 

@@ -3,6 +3,7 @@ import { FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../utils/axios.js";
+import { toast } from "sonner";
 
 function LoginPage() {
   const location = useLocation();
@@ -20,16 +21,26 @@ function LoginPage() {
         email: data.email,
         password: data.password,
       });
-
+      if (!user) {
+        toast.error("User not found!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
       localStorage.setItem("id", user.data.userData.id);
       localStorage.setItem(
         "emerData",
         JSON.stringify(user.data.userData.emerData),
       );
-
-      navigate(from, { replace: true });
+      toast.success("Seccessfully Logged In!");
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 2000);
     } catch (err) {
-      console.log(err);
+      toast.error("Internal server error!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
   };
 

@@ -3,9 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 
 function BottomBar() {
   const user = localStorage.getItem("id");
-  const refresh = () => {
-    window.location.reload();
-  };
+
   return (
     <>
       <div className="sticky bottom-0 left-0 right-0">
@@ -13,9 +11,11 @@ function BottomBar() {
           className="fixed bottom-0 left-0 md:left-45 w-full md:w-250 bg-gradient-to-r from-pink-200 to-pink-500 
             py-3 flex justify-around items-center shadow-xl bottomBar"
         >
-          <button onClick={refresh}>
-            <i className="fa-solid fa-house text-pink-500"></i>
-          </button>
+          <Link to="/about">
+            <button>
+              <i className="fa-solid fa-circle-info text-pink-500"></i>
+            </button>
+          </Link>
 
           <Link to="/dial">
             <button>
@@ -27,7 +27,8 @@ function BottomBar() {
               <i className="fa-solid fa-map text-pink-500"></i>
             </button>
           </Link>
-          <Link to="/sosRecords">
+
+          <Link to={user ? "/sosRecords" : "/login"}>
             <button>
               <i className="fa-solid fa-bell text-pink-500"></i>
             </button>
