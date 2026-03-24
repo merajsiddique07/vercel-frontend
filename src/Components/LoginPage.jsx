@@ -1,7 +1,7 @@
 import React from "react";
 import { FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../utils/axios.js";
 
 function LoginPage() {

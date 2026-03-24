@@ -1,7 +1,7 @@
 import React from "react";
 import { FaGoogle, FaFacebookF, FaApple } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../utils/axios.js";
 
 function SignupPage() {
@@ -119,12 +119,12 @@ function SignupPage() {
             <div className="flex items-center justify-between text-sm">
               <span>
                 Already member?{" "}
-                <a href="/login">
+                <Link to="/login">
                   {" "}
                   <span className="underline cursor-pointer text-md">
                     Login
                   </span>
-                </a>
+                </Link>
               </span>
 
               <button
