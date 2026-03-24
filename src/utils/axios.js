@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:8080"; // your backend
+axios.defaults.baseURL = "https://vercel-backend-xi-jade.vercel.app"; // your backend
 axios.defaults.withCredentials = true;
 
 export default axios;
