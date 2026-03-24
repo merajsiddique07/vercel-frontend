@@ -142,7 +142,7 @@ function Hero() {
     try {
       addLog("📡 Sending SOS to server...");
 
-      await fetch("http://localhost:8080/user/sos", {
+      await fetch("https://vercel-backend-xi-jade.vercel.app/user/sos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
