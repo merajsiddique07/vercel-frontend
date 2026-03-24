@@ -94,13 +94,12 @@ function LoginPage() {
             <div className="flex items-center justify-between text-sm">
               <span>
                 New Here?{" "}
-                <a href="/signup">
+                <Link to="/signup">
                   <span className="underline cursor-pointer text-md">
                     Register
                   </span>
-                </a>
+                </Link>
               </span>
-
               <button
                 type="submit"
                 className="bg-white text-pink-500 px-6 py-2 rounded-md font-medium cursor-pointer shadow hover:bg-gray-200 text-xl"
