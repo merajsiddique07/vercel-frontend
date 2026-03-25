@@ -21,12 +21,6 @@ function LoginPage() {
         email: data.email,
         password: data.password,
       });
-      if (!user) {
-        toast.error("User not found!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      }
       localStorage.setItem("id", user.data.userData.id);
       localStorage.setItem(
         "emerData",

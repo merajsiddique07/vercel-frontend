@@ -25,12 +25,13 @@ function ProfilePage() {
       .get(`/user/profile/${id}`)
       .then((res) => {
         setProfile(res.data.userDetails);
+        localStorage.setItem(
+          "emerData",
+          JSON.stringify(res.data.userDetails.emergencyContacts),
+        );
       })
       .catch((err) => {
-        console.log(err.response);
-        if (err.respose) {
-          console.log("Error :", err.respose.data.message);
-        }
+        toast.error("Something went wrong!");
       });
   };
 
@@ -38,7 +39,7 @@ function ProfilePage() {
     localStorage.removeItem("id");
     localStorage.removeItem("emerData");
     localStorage.removeItem("address");
-    navigate("/home");
+    navigate("/");
   };
 
   useEffect(() => {

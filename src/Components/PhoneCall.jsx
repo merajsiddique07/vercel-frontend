@@ -7,7 +7,7 @@ function PhoneCall() {
 
   const emerData = JSON.parse(localStorage.getItem("emerData")) || {
     name: "Papa",
-    phone: "4918590830",
+    phone: "0091859083",
   };
 
   const callerName = location.state?.callerName || emerData.name;
