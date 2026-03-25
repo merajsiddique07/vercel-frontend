@@ -39,6 +39,7 @@ function ProfilePage() {
     localStorage.removeItem("id");
     localStorage.removeItem("emerData");
     localStorage.removeItem("address");
+    toast.success("Successfully LogOut!");
     navigate("/");
   };
 

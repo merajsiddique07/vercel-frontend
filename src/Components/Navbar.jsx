@@ -4,6 +4,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { BiCurrentLocation } from "react-icons/bi";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 function Navbar() {
   const id = localStorage.getItem("id");
@@ -23,7 +24,10 @@ function Navbar() {
     localStorage.removeItem("id");
     localStorage.removeItem("emerData");
     localStorage.removeItem("address");
-    window.location.reload();
+    toast.success("Successfully LogOut!");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const refresh = () => {
